@@ -8,28 +8,28 @@ const data = [
     },
     {
       id: 11,
-      name: "Invicta Men's Pro Diver 2",
+      name: "Invicta girl's Pro",
       img: "IMAGES/2.webp",
       price: 98,
       cat: "Dress",
     },
     {
       id: 2,
-      name: "Timex Men's Expedition Scout ",
+      name: "Timex thief",
       img: "IMAGES/3.webp",
       price: 118,
       cat: "Sport",
     },
     {
       id: 3,
-      name: "Breitling Superocean Heritage",
+      name: "Breitling Angry Birds",
       img: "IMAGES/4.webp",
       price: 299,
       cat: "Luxury",
     },
     {
       id: 4,
-      name: "Casio Classic Resin Strap ",
+      name: "Casio Classic A12 ",
       img: "IMAGES/6.webp",
       price: 20,
       cat: "Sport",
@@ -43,14 +43,14 @@ const data = [
     },
     {
       id: 1,
-      name: "Invicta Men's Pro Diver",
+      name: "Niko Men Elite",
       img: "IMAGES/8.webp",
       price: 34,
       cat: "Dress",
     },
     {
       id: 11,
-      name: "Invicta Men's Pro Diver 2",
+      name: "Invicta Pro max",
       img: "IMAGES/9.webp",
       price: 74,
       cat: "Dress",
@@ -85,70 +85,70 @@ const data = [
     },
     {
       id: 4,
-      name: "Casio Classic Resin Strap ",
+      name: "Casio Watch Nord ",
       img: "IMAGES/14.webp",
       price: 10,
       cat: "Sport",
     },
     {
       id: 5,
-      name: "Garmin Venu Smartwatch ",
+      name: "Smartwatch ",
       img: "IMAGES/15.webp",
       price: 89,
       cat: "Casual",
     },
     {
       id: 1,
-      name: "Invicta Men's Pro Diver",
+      name: "Rolex Fendi",
       img: "IMAGES/16.webp",
       price: 69,
       cat: "Dress",
     },
     {
       id: 11,
-      name: "Invicta Men's Pro Diver 2",
+      name: "Invicta Men's  Diver 2",
       img: "IMAGES/17.webp",
       price: 72,
       cat: "Dress",
     },
     {
       id: 2,
-      name: "Timex Men's Expedition Scout ",
+      name: "Timex Men's  Scout ",
       img: "IMAGES/18.webp",
       price: 205,
       cat: "Sport",
     },
     {
       id: 3,
-      name: "Breitling Superocean Heritage",
+      name: "Breitling Superocean",
       img: "IMAGES/19.webp",
       price: 350,
       cat: "Luxury",
     },
     {
       id: 4,
-      name: "Casio Classic Resin Strap ",
+      name: "Casio Resin Strap ",
       img: "IMAGES/20.webp",
       price: 40,
       cat: "Sport",
     },
     {
       id: 5,
-      name: "Garmin Venu Smartwatch ",
+      name: "Garmin  Smartwatch ",
       img: "IMAGES/21.webp",
       price: 14,
       cat: "Casual",
     },
     {
       id: 4,
-      name: "Casio Classic Resin Strap ",
+      name: "Casio Classic Strap ",
       img: "IMAGES/22.webp",
       price: 100,
       cat: "Sport",
     },
     {
       id: 5,
-      name: "Garmin Venu Smartwatch ",
+      name: "Venu Smartwatch ",
       img: "IMAGES/23.webp",
       price: 54,
       cat: "Casual",
@@ -177,19 +177,66 @@ const data = [
   };
 
   displayProducts(data);
-  // fin
+  // end of rendering to z screen
+
+//
+
+  // First filter : filtering by names troughtout the search input 
+searchInput.addEventListener("keyup", (e)=>{
+  const value = e.target.value.toLowerCase();
+
+  if(value){
+    displayProducts(data.filter(item => item.name.toLocaleLowerCase().indexOf(value) !== -1));
+  }else{
+    displayProducts(data);
+  };
+});
+// end of first filter
 
 
-  // now filtering by names 
+// Second filter : filtering by Categories
+const setCategories = () => {
+  const allCats = data.map((item) => item.cat);
+  const categories = [
+    "All",
+    ...allCats.filter((item, i) => {
+      return allCats.indexOf(item) === i;
+    }),
+  ]
+  categoriesContainer.innerHTML = categories.map(cat => 
+    `
+    <span class = "cat">${cat}</span>
+    `).join("") 
+    
+    categoriesContainer.addEventListener("click", (e) => {
+      const selectedCat = e.target.textContent;
 
-  searchInput.addEventListener("keyup", (e) => {
-    const value = e.target.value.toLowerCase();
+      selectedCat === "All"
+      ? displayProducts(data)
+      : displayProducts(data.filter((item) => item.cat === selectedCat));
+    });
+};
 
-    if(value){
-      displayProducts(data.filter(item => item.name.toLocaleLowerCase().indexOf(value) !== -1));
-    }else{
-      displayProducts(data);
-    }
+setCategories();
+// End of Second filter 
+
+// third filter : filtering by price
+const setPrices = () => {
+  const priceList = data.map((item) => item.price)
+  const minPrice = Math.min(...priceList)
+  const maxPrice = Math.max(...priceList)
+
+  priceRange.min = minPrice
+  priceRange.max = maxPrice
+  priceRange.value = maxPrice
+  priceValues.textContent = "$" + maxPrice
+
+  priceRange.addEventListener("input", (e) => {
+    priceValues.textContent = "$" + e.target.value
+    displayProducts(data.filter((item)=> item.price <= e.target.value))
   })
+}
 
+setPrices();
 
+// end
