@@ -158,7 +158,7 @@ const data = [
 
 
   const productsContainer = document.querySelector(".products"); // used for calling stuff to the screen
-  const searchInput = document.querySelector(".search");
+  const searchInput = document.querySelector(".search"); // used while filtering by names
   const categoriesContainer = document.querySelector(".cats");
   const priceRange = document.querySelector(".priceRange");
   const priceValues = document.querySelector(".priceValue");
@@ -178,3 +178,18 @@ const data = [
 
   displayProducts(data);
   // fin
+
+
+  // now filtering by names 
+
+  searchInput.addEventListener("keyup", (e) => {
+    const value = e.target.value.toLowerCase();
+
+    if(value){
+      displayProducts(data.filter(item => item.name.toLocaleLowerCase().indexOf(value) !== -1));
+    }else{
+      displayProducts(data);
+    }
+  })
+
+
